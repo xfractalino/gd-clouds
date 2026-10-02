@@ -24,6 +24,9 @@ if(NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/godot-cpp/src")
         COMMAND_ERROR_IS_FATAL ANY
     )
 endif()
+
+# Godot API version to target, unless overridden with -DGODOTCPP_API_VERSION=<version>
+set(GODOTCPP_DEFAULT_API_VERSION "4.5")
 add_subdirectory(godot-cpp SYSTEM)
 
 # When compiling for emscripten, this toolchainhack needs to be included.
