@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CloudsConfig" inherits="Resource" api_type="extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		Configuration of a cloud layer for [VolumetricCloudsEffect].
+	</brief_description>
+	<description>
+		Describes a cloud layer as a spherical shell around a planet, along with the quality settings it is ray marched with.
+		Setting a property to a value outside of its valid range prints an error and leaves the previous value in place.
+	</description>
+	<tutorials>
+	</tutorials>
+	<members>
+		<member name="cloud_inner_height" type="float" setter="set_cloud_inner_height" getter="get_cloud_inner_height" default="10.0">
+			Altitude above the planet's surface at which the cloud layer starts. Cannot be negative.
+		</member>
+		<member name="cloud_outer_height" type="float" setter="set_cloud_outer_height" getter="get_cloud_outer_height" default="50.0">
+			Altitude above the planet's surface at which the cloud layer ends. Must be greater than [member cloud_inner_height], otherwise the layer has no thickness.
+		</member>
+		<member name="cloud_tile_size" type="float" setter="set_cloud_tile_size" getter="get_cloud_tile_size" default="200.0">
+			World space distance after which the cloud noise repeats. Larger values give larger clouds.
+		</member>
+		<member name="coverage" type="float" setter="set_coverage" getter="get_coverage" default="0.3">
+			How much of the layer is filled with clouds, from [code]0.1[/code] to [code]1.0[/code].
+		</member>
+		<member name="density_multiplier" type="float" setter="set_density_multiplier" getter="get_density_multiplier" default="1.0">
+			Scales the density of the clouds, from [code]0.0[/code] to [code]1.0[/code].
+		</member>
+		<member name="light_steps" type="int" setter="set_light_steps" getter="get_light_steps" default="6">
+			Number of samples taken towards the sun to light each cloud sample, from [code]1[/code] to [code]10[/code].
+		</member>
+		<member name="march_steps" type="int" setter="set_march_steps" getter="get_march_steps" default="64">
+			Base number of steps each view ray is marched with, from [code]1[/code] to [code]256[/code].
+		</member>
+		<member name="max_march_distance" type="float" setter="set_max_march_distance" getter="get_max_march_distance" default="8000.0">
+			Distance from the camera past which clouds are no longer rendered.
+		</member>
+		<member name="planet_center" type="Vector3" setter="set_planet_center" getter="get_planet_center" default="Vector3(0, 0, 0)">
+			World space position of the center of the planet.
+		</member>
+		<member name="planet_radius" type="float" setter="set_planet_radius" getter="get_planet_radius" default="1000.0">
+			Radius of the planet's surface. The cloud heights are measured from it.
+		</member>
+		<member name="resolution_divisor" type="int" setter="set_resolution_divisor" getter="get_resolution_divisor" default="2">
+			The clouds are ray marched at the viewport's resolution divided by this value, from [code]1[/code] to [code]4[/code], and then upsampled.
+		</member>
+		<member name="seed" type="int" setter="set_seed" getter="get_seed" default="1234">
+			Seed the cloud noise is generated with.
+		</member>
+	</members>
+</class>
