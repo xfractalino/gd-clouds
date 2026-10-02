@@ -67,7 +67,7 @@ inline uint8_t to_byte(float p_value) {
 Float3 cell_point(uint32_t p_x, uint32_t p_y, uint32_t p_z, uint32_t p_seed) {
 	uint32_t hash = hash_cell(p_x, p_y, p_z, p_seed * 2654435761u);
 
-	Float3 point;
+	Float3 point{};
 	point.x = low_bits_to_unit(hash);
 	hash *= 0x27d4eb2du;
 	point.y = low_bits_to_unit(hash);
