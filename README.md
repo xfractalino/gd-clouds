@@ -1,56 +1,75 @@
-# godot-cpp template
-This repository serves as a quickstart template for GDExtension development with Godot 4.0+.
+# gd-clouds
 
-## Contents
-* Preconfigured source files for C++ development of the GDExtension ([src/](./src/))
-* An empty Godot project in [project/](./project), to test the GDExtension
-* godot-cpp as a submodule (`godot-cpp/`)
-* GitHub Issues template ([.github/ISSUE_TEMPLATE.yml](./.github/ISSUE_TEMPLATE.yml))
-* GitHub CI/CD workflows to publish your library packages when creating a release ([.github/workflows/builds.yml](./.github/workflows/builds.yml))
-* An SConstruct file with various functions, such as boilerplate for [Adding documentation](https://docs.godotengine.org/en/stable/tutorials/scripting/cpp/gdextension_docs_system.html)
+Volumetric clouds for Godot, as a GDExtension.
 
-## Usage - Template
+The clouds are a layer wrapped around a planet. They are ray marched with compute shaders in a
+[compositor effect](https://docs.godotengine.org/en/stable/tutorials/rendering/compositor.html) at reduced resolution,
+then upsampled and composited over the scene.
 
-To use this template, log in to GitHub and click the green "Use this template" button at the top of the repository page. This will let you create a copy of this repository with a clean git history.
+It targets Godot 4.5 and newer, and is developed against 4.7. It needs a renderer with a `RenderingDevice`, so it does
+not work with the Compatibility renderer. It has been tested with Forward+.
 
-To get started with your new GDExtension, do the following:
+## Building
 
-* clone your repository to your local computer
-* initialize the godot-cpp git submodule via `git submodule update --init`
-* change the name of the compiled library file inside the [SConstruct](./SConstruct) file by modifying the `libname` string.
-  * change the paths of the to be loaded library name inside the [project/bin/example.gdextension](./project/bin/example.gdextension) file, by replacing `EXTENSION-NAME` with the name you chose for `libname`.
-* change the `entry_symbol` string inside [project/bin/example.gdextension](./project/bin/example.gdextension) file.
-  * rename the `example_library_init` function in [src/register_types.cpp](./src/register_types.cpp) to the same name you chose for `entry_symbol`.
-* change the name of the `project/bin/example.gdextension` file
+You need Python 3, a C++17 compiler, and either SCons or CMake.
 
-Now, you can build the project with the following command:
+```shell
+git clone --recurse-submodules https://github.com/xfractalino/gd-clouds
+cd gd-clouds
+```
+
+With SCons:
 
 ```shell
 scons
 ```
 
-If the build command worked, you can test it with the [project](./project) project. Import it into Godot, open it, and launch the main scene. You should see it print the following line in the console:
+Or with CMake:
 
-```
-Type: 24
-```
-
-### Configuring an IDE
-You can develop your own extension with any text editor and by invoking scons on the command line, but if you want to work with an IDE (Integrated Development Environment), you can use a compilation database file called `compile_commands.json`. Most IDEs should automatically identify this file, and self-configure appropriately.
-To generate the database file, you can run one of the following commands in the project root directory:
 ```shell
-# Generate compile_commands.json while compiling
-scons compiledb=yes
-
-# Generate compile_commands.json without compiling
-scons compiledb=yes compile_commands.json
+cmake -S . -B build -G Ninja
+cmake --build build
 ```
 
-## Usage - Actions
+Either way, the library ends up in `project/addons/gd_clouds/bin/<platform>/`.
 
-This repository comes with continuous integration (CI) through a GitHub action that tests building the GDExtension.
-It triggers automatically for each pushed change. You can find and edit it in [builds.yml](.github/workflows/ci.yml).
+On Windows with MinGW, use the MSYS2 toolchain. The MinGW bundled with CLion fails to link the library.
 
-There is also a workflow ([make_build.yml](.github/workflows/make_build.yml)) that builds the GDExtension for all supported platforms that you can use to create releases.
-You can trigger this workflow manually from the `Actions` tab on GitHub.
-After it is complete, you can find the file `godot-cpp-template.zip` in the `Artifacts` section of the workflow run.
+## Using it in Godot
+
+1. Build the library.
+2. Copy `project/addons/gd_clouds` into the `addons` folder of your project. It has to stay at
+   `res://addons/gd_clouds`, as the shaders are loaded from there.
+3. Restart the editor.
+4. Add a `VolumetricCloudsEffect` to the `Compositor` of your `WorldEnvironment` or `Camera3D`, and give it a noise
+   texture:
+
+```gdscript
+var effect := VolumetricCloudsEffect.new()
+effect.clouds_config = CloudsConfig.new()
+effect.noise_texture = CloudNoise.bake(effect.clouds_config.seed)
+effect.sun_direction = $Sun.global_basis.z
+
+var compositor := Compositor.new()
+compositor.compositor_effects = [effect]
+$WorldEnvironment.compositor = compositor
+```
+
+Things to know:
+
+- `CloudsConfig` describes the planet and the cloud layer. By default the planet is at the origin with a radius of
+  1000, and the clouds sit between 10 and 50 units above its surface.
+- Baking the noise takes a few seconds. Save the texture with `ResourceSaver` and load it afterwards, instead of
+  baking it on every run.
+- The clouds are only drawn in the running game, not in the editor viewport.
+
+The three classes are documented in the editor's built-in help.
+
+## Demo
+
+Open the `project` folder in Godot and run it. The first run bakes the noise, which takes a few seconds. Hold the
+right mouse button to look around, move with WASD, go down and up with Q and E, and hold Shift to move faster.
+
+## License
+
+See [LICENSE.md](LICENSE.md).
