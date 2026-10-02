@@ -61,7 +61,6 @@ void main() {
     for (int i = 0; i < 4; i++) {
         ivec2 hp = clamp(h0 + offsets[i], ivec2(0), marchMax);
 
-        // Matches clouds_march.glsl exactly!
         ivec2 src = ivec2((vec2(hp) + 0.5) * p.marchSize.zw * p.screenSize.xy);
         src = clamp(src, ivec2(0), fullMax);
 
