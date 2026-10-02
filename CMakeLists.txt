@@ -55,6 +55,68 @@ project(gd-clouds
     LANGUAGES CXX
 )
 
+# godot-cpp only generates its bindings when it gets built, but IDEs index the include directories as soon as the
+# project is loaded. CLion doesn't pick up the headers that show up afterwards until its caches are invalidated, so
+# generate them here already when they are missing. The build still generates them itself as usual.
+function(generate_bindings_for_ide)
+    set(OUTPUT_DIR "${godot-cpp_BINARY_DIR}")
+
+    if(EXISTS "${OUTPUT_DIR}/gen/include/godot_cpp/classes/object.hpp")
+        return()
+    endif()
+
+    # This mirrors how godot-cpp/cmake/godotcpp.cmake picks the inputs of its binding generator.
+    if(GODOTCPP_BUILD_PROFILE)
+        set(API_FILE "${OUTPUT_DIR}/extension_api.json")
+    elseif(GODOTCPP_CUSTOM_API_FILE)
+        set(API_FILE "${GODOTCPP_CUSTOM_API_FILE}")
+    else()
+        set(API_VERSION "${GODOTCPP_API_VERSION}")
+        if(API_VERSION STREQUAL "")
+            set(API_VERSION "${GODOTCPP_DEFAULT_API_VERSION}")
+        endif()
+        string(REPLACE "." "-" API_VERSION "${API_VERSION}")
+        set(API_FILE "${GODOTCPP_GDEXTENSION_DIR}/extension_api-${API_VERSION}.json")
+    endif()
+
+    set(USE_TEMPLATE_GET_NODE "False")
+    if(GODOTCPP_GENERATE_TEMPLATE_GET_NODE)
+        set(USE_TEMPLATE_GET_NODE "True")
+    endif()
+
+    math(EXPR BITS "${CMAKE_SIZEOF_VOID_P} * 8")
+    get_target_property(PRECISION godot::cpp GODOTCPP_PRECISION)
+
+    string(CONCAT PYTHON_SCRIPT
+        "from binding_generator import generate_bindings; "
+        "generate_bindings("
+        "api_filepath='${API_FILE}', "
+        "interface_filepath='${GODOTCPP_GDEXTENSION_DIR}/gdextension_interface.json', "
+        "use_template_get_node='${USE_TEMPLATE_GET_NODE}', "
+        "bits='${BITS}', "
+        "precision='${PRECISION}', "
+        "output_dir='${OUTPUT_DIR}', "
+        "hooks_path='${GODOTCPP_BINDING_HOOK_FILE}')"
+    )
+
+    message(STATUS "Generating the godot-cpp bindings ahead of the build, for IDEs")
+
+    execute_process(
+        COMMAND "${Python3_EXECUTABLE}" -c "${PYTHON_SCRIPT}"
+        WORKING_DIRECTORY "${godot-cpp_SOURCE_DIR}"
+        RESULT_VARIABLE RESULT
+        OUTPUT_QUIET
+        ERROR_VARIABLE ERRORS
+    )
+
+    # This is only a convenience, the build doesn't depend on it.
+    if(NOT RESULT EQUAL 0)
+        message(WARNING "Could not generate the godot-cpp bindings ahead of the build:\n${ERRORS}")
+    endif()
+endfunction()
+
+generate_bindings_for_ide()
+
 add_library(${LIBNAME} SHARED)
 
 target_sources(${LIBNAME}
