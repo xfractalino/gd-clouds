@@ -29,14 +29,14 @@ public:
 	void _render_callback(int32_t p_effect_callback_type, RenderData *p_render_data) override;
 
 	void set_clouds_config(const Ref<CloudsConfig> &p_clouds_config);
-	Ref<CloudsConfig> get_clouds_config() const;
+	[[nodiscard]] Ref<CloudsConfig> get_clouds_config() const;
 
 	void set_noise_texture(const Ref<Texture3D> &p_noise_texture);
-	Ref<Texture3D> get_noise_texture() const;
+	[[nodiscard]] Ref<Texture3D> get_noise_texture() const;
 
 	void set_sun_direction(const Vector3 &p_sun_direction);
 	Vector3 get_sun_direction() const;
 
 	void set_sun_energy(float p_sun_energy);
-	float get_sun_energy() const;
+	[[nodiscard]] float get_sun_energy() const;
 };

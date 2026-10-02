@@ -34,35 +34,35 @@ public:
 	Vector3 get_planet_center() const;
 
 	void set_planet_radius(float p_planet_radius);
-	float get_planet_radius() const;
+	[[nodiscard]] float get_planet_radius() const;
 
 	void set_cloud_inner_height(float p_cloud_inner_height);
-	float get_cloud_inner_height() const;
+	[[nodiscard]] float get_cloud_inner_height() const;
 
 	void set_cloud_outer_height(float p_cloud_outer_height);
-	float get_cloud_outer_height() const;
+	[[nodiscard]] float get_cloud_outer_height() const;
 
 	void set_seed(int p_seed);
-	int get_seed() const;
+	[[nodiscard]] int get_seed() const;
 
 	void set_cloud_tile_size(float p_cloud_tile_size);
-	float get_cloud_tile_size() const;
+	[[nodiscard]] float get_cloud_tile_size() const;
 
 	void set_density_multiplier(float p_density_multiplier);
-	float get_density_multiplier() const;
+	[[nodiscard]] float get_density_multiplier() const;
 
 	void set_coverage(float p_coverage);
-	float get_coverage() const;
+	[[nodiscard]] float get_coverage() const;
 
 	void set_march_steps(int p_march_steps);
-	int get_march_steps() const;
+	[[nodiscard]] int get_march_steps() const;
 
 	void set_light_steps(int p_light_steps);
-	int get_light_steps() const;
+	[[nodiscard]] int get_light_steps() const;
 
 	void set_max_march_distance(float p_max_march_distance);
-	float get_max_march_distance() const;
+	[[nodiscard]] float get_max_march_distance() const;
 
 	void set_resolution_divisor(int p_resolution_divisor);
-	int get_resolution_divisor() const;
+	[[nodiscard]] int get_resolution_divisor() const;
 };
