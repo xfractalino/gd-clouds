@@ -5,16 +5,34 @@
 	</brief_description>
 	<description>
 		Ray marches a cloud layer around a planet with compute shaders and composites it over the scene after the transparent pass. Add it to [member Compositor.compositor_effects] to use it.
+		The clouds are only rendered once a [member noise_texture] has been set. They are not rendered in the editor.
 		This requires a [RenderingDevice], so it does not work with the Compatibility renderer.
 	</description>
 	<tutorials>
 	</tutorials>
+	<methods>
+		<method name="print_gpu_profile">
+			<return type="void" />
+			<description>
+				Prints how long the ray march and the upsample pass took on the GPU during the last frame. Requires [member profile_gpu] to be enabled.
+			</description>
+		</method>
+		<method name="reload_pipeline">
+			<return type="void" />
+			<description>
+				Frees the compute pipelines, so that they are built again from the shader files the next time the clouds are rendered. Use this to see changes to the shaders without restarting, or to try again after a shader failed to compile.
+			</description>
+		</method>
+	</methods>
 	<members>
 		<member name="clouds_config" type="CloudsConfig" setter="set_clouds_config" getter="get_clouds_config">
-			The cloud layer to render.
+			The cloud layer to render. If unset, a layer with the default values of [CloudsConfig] is rendered.
 		</member>
 		<member name="noise_texture" type="Texture3D" setter="set_noise_texture" getter="get_noise_texture">
-			Tiling noise the cloud density is sampled from. The red channel holds the Perlin-Worley noise that gives the clouds their shape, and the green, blue and alpha channels hold Worley noise of increasing frequency that erodes their edges.
+			Tiling noise the cloud density is sampled from, which [method CloudNoise.bake] generates. The red channel holds the Perlin-Worley noise that gives the clouds their shape, and the green, blue and alpha channels hold Worley noise of increasing frequency that erodes their edges.
+		</member>
+		<member name="profile_gpu" type="bool" setter="set_profile_gpu" getter="is_profiling_gpu" default="false">
+			If [code]true[/code], GPU timestamps are captured around the passes of the effect, for [method print_gpu_profile] to report.
 		</member>
 		<member name="sun_direction" type="Vector3" setter="set_sun_direction" getter="get_sun_direction" default="Vector3(0.42399913, 0.84799826, 0.31799936)">
 			World space direction pointing towards the sun. It does not need to be normalized, but it cannot be a zero vector.
