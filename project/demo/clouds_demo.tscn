@@ -1,0 +1,51 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://demo/clouds_demo.gd" id="1_1d3vp"]
+[ext_resource type="Script" path="res://demo/free_camera.gd" id="2_rhrtu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_18mms"]
+
+[sub_resource type="Sky" id="Sky_o23bk"]
+sky_material = SubResource("ProceduralSkyMaterial_18mms")
+
+[sub_resource type="Environment" id="Environment_1l5xa"]
+background_mode = 2
+sky = SubResource("Sky_o23bk")
+tonemap_mode = 4
+
+[sub_resource type="CloudsConfig" id="CloudsConfig_10gqi"]
+
+[sub_resource type="VolumetricCloudsEffect" id="VolumetricCloudsEffect_xd8nl"]
+clouds_config = SubResource("CloudsConfig_10gqi")
+
+[sub_resource type="Compositor" id="Compositor_bnlat"]
+compositor_effects = Array[CompositorEffect]([SubResource("VolumetricCloudsEffect_xd8nl")])
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vfflk"]
+albedo_color = Color(0, 0.37, 0.04, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_o7xst"]
+material = SubResource("StandardMaterial3D_vfflk")
+radius = 1000.0
+height = 2000.0
+radial_segments = 256
+rings = 128
+
+[node name="CloudsDemo" type="Node3D" unique_id=986057676]
+script = ExtResource("1_1d3vp")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2051749817]
+environment = SubResource("Environment_1l5xa")
+compositor = SubResource("Compositor_bnlat")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=2004272040]
+transform = Transform3D(0.6, -0.67839867, 0.42399916, 0, 0.52999896, 0.8479983, -0.8, -0.508799, 0.3179994, 0, 0, 0)
+
+[node name="Planet" type="MeshInstance3D" parent="." unique_id=1634071555]
+mesh = SubResource("SphereMesh_o7xst")
+
+[node name="Camera" type="Camera3D" parent="." unique_id=912471378]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1002, 0)
+current = true
+far = 10000.0
+script = ExtResource("2_rhrtu")
