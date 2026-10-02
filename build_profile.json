@@ -3,10 +3,24 @@
 	"type": "feature_profile",
 	"enabled_classes": [
 		"CompositorEffect",
+		"Engine",
 		"ImageTexture3D",
 		"OS",
+		"RDPipelineSpecializationConstant",
+		"RDSamplerState",
+		"RDShaderFile",
+		"RDShaderSPIRV",
+		"RDShaderSource",
+		"RDUniform",
 		"RenderData",
+		"RenderSceneBuffersRD",
+		"RenderSceneData",
+		"RenderingDevice",
+		"RenderingServer",
 		"Resource",
-		"Texture3D"
+		"ResourceLoader",
+		"ShaderInclude",
+		"Texture3D",
+		"UniformSetCacheRD"
 	]
 }

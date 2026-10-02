@@ -65,6 +65,9 @@ target_sources(${LIBNAME}
     src/cloud_noise.h
     src/clouds_config.cpp
     src/clouds_config.h
+    src/rd_utils.h
+    src/shader_builder.cpp
+    src/shader_builder.h
     src/volumetric_clouds_effect.cpp
     src/volumetric_clouds_effect.h
 )
