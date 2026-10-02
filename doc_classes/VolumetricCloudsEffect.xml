@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="VolumetricCloudsEffect" inherits="CompositorEffect" api_type="extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		Volumetric clouds rendered as a compositor effect.
+	</brief_description>
+	<description>
+		Ray marches a cloud layer around a planet with compute shaders and composites it over the scene after the transparent pass. Add it to [member Compositor.compositor_effects] to use it.
+		This requires a [RenderingDevice], so it does not work with the Compatibility renderer.
+	</description>
+	<tutorials>
+	</tutorials>
+	<members>
+		<member name="clouds_config" type="CloudsConfig" setter="set_clouds_config" getter="get_clouds_config">
+			The cloud layer to render.
+		</member>
+		<member name="noise_texture" type="Texture3D" setter="set_noise_texture" getter="get_noise_texture">
+			Tiling noise the cloud density is sampled from. The red channel holds the Perlin-Worley noise that gives the clouds their shape, and the green, blue and alpha channels hold Worley noise of increasing frequency that erodes their edges.
+		</member>
+		<member name="sun_direction" type="Vector3" setter="set_sun_direction" getter="get_sun_direction" default="Vector3(0.42399913, 0.84799826, 0.31799936)">
+			World space direction pointing towards the sun. It does not need to be normalized, but it cannot be a zero vector.
+		</member>
+		<member name="sun_energy" type="float" setter="set_sun_energy" getter="get_sun_energy" default="25.0">
+			How brightly the sun lights the clouds.
+		</member>
+	</members>
+</class>
