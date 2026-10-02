@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<class name="CloudNoise" inherits="Object" api_type="extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/godotengine/godot/master/doc/class.xsd">
+	<brief_description>
+		Generator of the noise [VolumetricCloudsEffect] shapes its clouds with.
+	</brief_description>
+	<description>
+		Bakes the tiling 3D noise texture that goes into [member VolumetricCloudsEffect.noise_texture]. This class only has static methods and cannot be instantiated.
+		Baking takes a while, so it is worth saving the result with [ResourceSaver] and loading it afterwards instead of baking it again on every run.
+	</description>
+	<tutorials>
+	</tutorials>
+	<methods>
+		<method name="bake" qualifiers="static">
+			<return type="ImageTexture3D" />
+			<param index="0" name="seed" type="int" />
+			<param index="1" name="size" type="int" default="128" />
+			<description>
+				Bakes a cube of noise with [param size] texels per side, that tiles along every axis. The same [param seed] always gives the same texture. Returns [code]null[/code] if [param size] is not between [code]1[/code] and [constant MAX_SIZE].
+				The red channel holds the Perlin-Worley noise that gives the clouds their shape. The green, blue and alpha channels hold Worley noise of 8, 16 and 32 cells per tile, which erodes their edges. Sizes below [code]64[/code] are too small to hold the finest of these.
+				The noise is computed on the CPU, spread over the threads of the [WorkerThreadPool], and this method blocks until it is done.
+			</description>
+		</method>
+	</methods>
+	<constants>
+		<constant name="DEFAULT_SIZE" value="128">
+			The size [method bake] uses when none is given.
+		</constant>
+		<constant name="MAX_SIZE" value="512">
+			The largest size [method bake] accepts. A texture of this size takes 512 MiB.
+		</constant>
+	</constants>
+</class>

@@ -3,6 +3,7 @@
 	"type": "feature_profile",
 	"enabled_classes": [
 		"CompositorEffect",
+		"ImageTexture3D",
 		"OS",
 		"RenderData",
 		"Resource",

@@ -61,6 +61,8 @@ target_sources(${LIBNAME}
     PRIVATE
     src/register_types.cpp
     src/register_types.h
+    src/cloud_noise.cpp
+    src/cloud_noise.h
     src/clouds_config.cpp
     src/clouds_config.h
     src/volumetric_clouds_effect.cpp
