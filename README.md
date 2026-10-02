@@ -11,6 +11,8 @@ then upsampled and composited over the scene.
 It targets Godot 4.5 and newer, and is developed against 4.7. It needs a renderer with a `RenderingDevice`, so it does
 not work with the Compatibility renderer. It has been tested with Forward+.
 
+Based on [my work](https://github.com/Revolutionary-Games/Thrive/pull/7164) in the Thrive repo.
+
 ## Building
 
 You need Python 3, a C++17 compiler, and either SCons or CMake.
