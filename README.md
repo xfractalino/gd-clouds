@@ -2,6 +2,8 @@
 
 Volumetric clouds for Godot, as a GDExtension.
 
+<img width="1153" height="647" alt="Screenshot 2026-10-02 162646" src="https://github.com/user-attachments/assets/92d7394a-5a36-46c4-abf7-1b6075355f46" />
+
 The clouds are a layer wrapped around a planet. They are ray marched with compute shaders in a
 [compositor effect](https://docs.godotengine.org/en/stable/tutorials/rendering/compositor.html) at reduced resolution,
 then upsampled and composited over the scene.
