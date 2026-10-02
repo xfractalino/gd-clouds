@@ -5,8 +5,11 @@ import sys
 from methods import print_error
 
 
-libname = "EXTENSION-NAME"
+libname = "gd_clouds"
 projectdir = "project"
+
+# The addon folder inside the Godot project. It holds the .gdextension file, the binaries and the shaders.
+addondir = "{}/addons/{}".format(projectdir, libname)
 
 localEnv = Environment(tools=["default"], PLATFORM="")
 
@@ -35,7 +38,7 @@ Run the following command to download godot-cpp:
     git submodule update --init --recursive""")
     sys.exit(1)
 
-env = SConscript("godot-cpp/SConstruct", {"api_version": 4.3, "env": env, "customs": customs})
+env = SConscript("godot-cpp/SConstruct", {"api_version": "4.5", "env": env, "customs": customs})
 
 env.Append(CPPPATH=["src/"])
 sources = Glob("src/*.cpp")
@@ -58,7 +61,7 @@ library = env.SharedLibrary(
     source=sources,
 )
 
-copy = env.Install("{}/bin/{}/".format(projectdir, env["platform"]), library)
+copy = env.Install("{}/bin/{}/".format(addondir, env["platform"]), library)
 
 default_args = [library, copy]
 Default(*default_args)

@@ -1,7 +1,6 @@
-#ifndef EXAMPLE_REGISTER_TYPES_H
-#define EXAMPLE_REGISTER_TYPES_H
+#pragma once
 
-void initialize_gdextension_types();
-void uninitialize_gdextension_types();
+#include <godot_cpp/godot.hpp>
 
-#endif // EXAMPLE_REGISTER_TYPES_H
+void initialize_gdextension_types(godot::ModuleInitializationLevel p_level);
+void uninitialize_gdextension_types(godot::ModuleInitializationLevel p_level);

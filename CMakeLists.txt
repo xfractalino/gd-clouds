@@ -5,8 +5,11 @@ cmake_minimum_required(VERSION 3.17)
 if(CMAKE_C_COMPILER)
 endif()
 
-set(LIBNAME "EXTENSION-NAME") # "The name of the library"
+set(LIBNAME "gd_clouds") # "The name of the library"
 set(GODOT_PROJECT_DIR "project" CACHE STRING "The directory of a Godot project folder")
+
+# The addon folder inside the Godot project. It holds the .gdextension file, the binaries and the shaders.
+set(ADDON_DIR "addons/${LIBNAME}")
 
 # Make sure all the dependencies are satisfied
 find_package(Python3 3.4 REQUIRED)
@@ -45,10 +48,10 @@ get_target_property(GODOTCPP_SUFFIX godot::cpp GODOTCPP_SUFFIX)
 get_target_property(GODOTCPP_PLATFORM godot::cpp GODOTCPP_PLATFORM)
 
 # Now we can specify our own project which will inherit any global cmake properties or variables that have been defined.
-project(godot-cpp-template
-    VERSION 1.0
-    DESCRIPTION "This repository serves as a quickstart template for GDExtension development with Godot 4.0+."
-    HOMEPAGE_URL "https://github.com/enetheru/godot-cpp-template/tree/main"
+project(gd-clouds
+    VERSION 0.1
+    DESCRIPTION "Volumetric clouds compositor effect for Godot's RenderingDevice renderers."
+    HOMEPAGE_URL "https://github.com/xfractalino/gd-clouds"
     LANGUAGES CXX
 )
 
@@ -58,6 +61,10 @@ target_sources(${LIBNAME}
     PRIVATE
     src/register_types.cpp
     src/register_types.h
+    src/clouds_config.cpp
+    src/clouds_config.h
+    src/volumetric_clouds_effect.cpp
+    src/volumetric_clouds_effect.h
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target
@@ -79,12 +86,20 @@ set_target_properties(${LIBNAME}
     PROPERTIES
     # The generator expression here prevents msvc from adding a Debug or Release subdir.
     RUNTIME_OUTPUT_DIRECTORY "$<1:${PROJECT_SOURCE_DIR}/bin/${GODOTCPP_PLATFORM}>"
+    LIBRARY_OUTPUT_DIRECTORY "$<1:${PROJECT_SOURCE_DIR}/bin/${GODOTCPP_PLATFORM}>"
 
-    PREFIX ""
     OUTPUT_NAME "${LIBNAME}${GODOTCPP_SUFFIX}"
 )
 
-set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/bin/${GODOTCPP_PLATFORM}")
+# Match the file names the SCons build produces, which are the ones listed in the .gdextension file: no prefix on
+# Windows, "lib" everywhere else.
+if(WIN32)
+    set_target_properties(${LIBNAME} PROPERTIES PREFIX "")
+else()
+    set_target_properties(${LIBNAME} PROPERTIES PREFIX "lib")
+endif()
+
+set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/${ADDON_DIR}/bin/${GODOTCPP_PLATFORM}")
 
 add_custom_command(TARGET ${LIBNAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIBNAME}>" "${GODOT_PROJECT_BINARY_DIR}/$<TARGET_FILE_NAME:${LIBNAME}>"
