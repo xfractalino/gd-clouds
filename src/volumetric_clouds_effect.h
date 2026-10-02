@@ -97,7 +97,7 @@ class VolumetricCloudsEffect : public CompositorEffect {
 
 	void _ensure_cloud_texture(const Ref<RenderSceneBuffersRD> &p_scene_buffers, const Vector2i &p_march_size, uint32_t p_view_count);
 	void _update_params(const CloudsConfig &p_config, const Vector2i &p_full_size, const Vector2i &p_march_size, const Vector3 &p_camera_position);
-	void _report_timestamps();
+	void _report_timestamps() const;
 
 protected:
 	static void _bind_methods();
