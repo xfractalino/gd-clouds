@@ -1,14 +1,10 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 
 contact_links:
-  - name: Godot proposals
-    url: https://github.com/godotengine/godot-proposals
-    about: Please submit feature proposals on the Godot proposals repository, not here.
-
-  - name: Godot documentation repository
-    url: https://github.com/godotengine/godot-docs
-    about: Please report issues with documentation on the Godot documentation repository, not here.
+  - name: Godot issues
+    url: https://github.com/godotengine/godot/issues
+    about: Please report issues that also happen without gd-clouds on the Godot repository, not here.
 
   - name: Godot community channels
     url: https://godotengine.org/community
-    about: Please ask for technical support on one of the other community channels, not here.
+    about: Please ask for general help with Godot on one of the community channels, not here.
