@@ -75,7 +75,7 @@ Ref<RDShaderSPIRV> compile_ray_marcher(RenderingDevice *p_rendering_device) {
 	shader_source->set_language(RenderingDevice::SHADER_LANGUAGE_GLSL);
 	shader_source->set_stage_source(RenderingDevice::SHADER_STAGE_COMPUTE, source);
 
-	const Ref<RDShaderSPIRV> spirv = p_rendering_device->shader_compile_spirv_from_source(shader_source);
+	Ref<RDShaderSPIRV> spirv = p_rendering_device->shader_compile_spirv_from_source(shader_source);
 	ERR_FAIL_COND_V_MSG(spirv.is_null(), Ref<RDShaderSPIRV>(), "Failed to compile the generated cloud shader.");
 
 	const String error = spirv->get_stage_compile_error(RenderingDevice::SHADER_STAGE_COMPUTE);
@@ -97,7 +97,7 @@ Ref<RDShaderSPIRV> load_spirv(const String &p_path) {
 	const Ref<RDShaderFile> shader_file = ResourceLoader::get_singleton()->load(p_path, "RDShaderFile", ResourceLoader::CACHE_MODE_IGNORE);
 	ERR_FAIL_COND_V_MSG(shader_file.is_null(), Ref<RDShaderSPIRV>(), vformat("Failed to load shader file: %s", p_path));
 
-	const Ref<RDShaderSPIRV> spirv = shader_file->get_spirv();
+	Ref<RDShaderSPIRV> spirv = shader_file->get_spirv();
 	ERR_FAIL_COND_V_MSG(spirv.is_null(), Ref<RDShaderSPIRV>(), vformat("Shader file has no SPIR-V: %s", p_path));
 
 	const String error = spirv->get_stage_compile_error(RenderingDevice::SHADER_STAGE_COMPUTE);
