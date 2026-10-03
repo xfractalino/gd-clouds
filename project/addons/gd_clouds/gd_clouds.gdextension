@@ -50,8 +50,3 @@ android.arm64.single.debug = "./bin/android/libgd_clouds.android.template_debug.
 android.arm64.double.debug = "./bin/android/libgd_clouds.android.template_debug.arm64.double.so"
 android.arm64.single.release = "./bin/android/libgd_clouds.android.template_release.arm64.so"
 android.arm64.double.release = "./bin/android/libgd_clouds.android.template_release.arm64.double.so"
-
-web.wasm32.single.debug = "./bin/web/libgd_clouds.web.template_debug.wasm32.nothreads.wasm"
-web.wasm32.double.debug = "./bin/web/libgd_clouds.web.template_debug.wasm32.double.nothreads.wasm"
-web.wasm32.single.release = "./bin/web/libgd_clouds.web.template_release.wasm32.nothreads.wasm"
-web.wasm32.double.release = "./bin/web/libgd_clouds.web.template_release.wasm32.double.nothreads.wasm"
