@@ -453,7 +453,7 @@ void VolumetricCloudsEffect::_update_params(const CloudsConfig &p_config, const 
 	memcpy(params.ptrw(), values, PARAMS_BUFFER_SIZE);
 }
 
-void VolumetricCloudsEffect::_report_timestamps() const {
+void VolumetricCloudsEffect::_report_timestamps() {
 	if (rendering_device == nullptr) {
 		return;
 	}
